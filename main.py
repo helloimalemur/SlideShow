@@ -8,7 +8,6 @@ import asyncio
 
 class SlideShow(App):
     def build(self):
-        #l = Label(text="yo")
         c = Carousel(direction='right')
         images = glob.glob("*.jpg")
         for i in images:

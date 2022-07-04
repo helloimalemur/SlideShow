@@ -10,16 +10,17 @@ import kivy
 
 class SlideShow(App):
     def build(self):
-        c = Carousel(direction='right')
+        #create child widget
+        carousel = Carousel(direction='right')
+
+        #load images
         images = glob.glob("/home/foxx/Pictures/*.jpg")
-        for i in images:
-            curimage = AsyncImage(source=i)
-            c.add_widget(curimage)
-            print(curimage)
-            #time.sleep(3)
-            #c.next_slide()
+
+        #for i in images:
+
+        ## create root layout and add widgets
         root = BoxLayout()
-        root.add_widget(c)
+        root.add_widget(carousel)
         return root
 
 

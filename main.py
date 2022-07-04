@@ -13,21 +13,21 @@ import kivy
 
 def getimages(self):
     self.images = glob.glob("/home/foxx/Pictures/*.jpg")
+    for i in self.images:
+        print(i)
+        image = AsyncImage(source=i)
+        self.carousel.add_widget(image)
     return self.images
 
 
 class SlideShow(App):
     def build(self):
-        Clock.schedule_interval(self.update, 2)
+        Clock.schedule_interval(self.update, 3)
         #create child widget
         self.carousel = Carousel(direction='right')
-
         #load images
         self.images = getimages(self)
-        for i in self.images:
-            print(i)
-            image = AsyncImage(source=i)
-            self.carousel.add_widget(image)
+
 
         ## create root layout and add widgets
         root = BoxLayout()
@@ -37,7 +37,12 @@ class SlideShow(App):
 
     def update(self, *args):
         print(time.time())
-        self.carousel.load_next()
+        if self.carousel.next_slide:
+            self.carousel.load_next()
+        else:
+            self.carousel.clear_widgets()
+            getimages(self)
+
 
 
 if __name__ == '__main__':

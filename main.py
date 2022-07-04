@@ -15,14 +15,10 @@ def getimages(self):
     self.images = glob.glob("/home/foxx/Pictures/*.jpg")
     return self.images
 
-def update(self):
-    print(time.time())
-
-
 
 class SlideShow(App):
     def build(self):
-        Clock.schedule_interval(update, 2)
+        Clock.schedule_interval(self.update, 2)
         #create child widget
         self.carousel = Carousel(direction='right')
 
@@ -36,8 +32,13 @@ class SlideShow(App):
         ## create root layout and add widgets
         root = BoxLayout()
         root.add_widget(self.carousel)
+        #self.carousel.load_next(next(image))
 
         return root
+
+    def update(self, *args):
+        print(time.time())
+        self.carousel.clear_widgets()
 
 
 if __name__ == '__main__':

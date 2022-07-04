@@ -32,13 +32,12 @@ class SlideShow(App):
         ## create root layout and add widgets
         root = BoxLayout()
         root.add_widget(self.carousel)
-        #self.carousel.load_next(next(image))
 
         return root
 
     def update(self, *args):
         print(time.time())
-        self.carousel.clear_widgets()
+        self.carousel.load_next()
 
 
 if __name__ == '__main__':

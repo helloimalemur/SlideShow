@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.carousel import Carousel
 from kivy.uix.label import Label
 from kivy.uix.image import AsyncImage
+from kivy.uix.boxlayout import BoxLayout
 import glob
 import time
 import asyncio
@@ -17,7 +18,9 @@ class SlideShow(App):
             print(curimage)
             #time.sleep(3)
             #c.next_slide()
-        return cmain.py
+        root = BoxLayout()
+        root.add_widget(c)
+        return root
 
 
 if __name__ == '__main__':

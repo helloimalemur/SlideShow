@@ -9,6 +9,16 @@ import random
 import time
 import asyncio
 import kivy
+import http.server
+import socketserver
+
+def initnet():
+    PORT = 8080
+    Handler = http.server.SimpleHTTPRequestHandler
+    Handler.path = "index.html"
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        print("serving at port", PORT)
+        httpd.serve_forever()
 
 #kivy
 def getimages(self): #grab images and return as glob
@@ -70,4 +80,5 @@ class SlideShow(App):
 
 
 if __name__ == '__main__':
+    #initnet()
     SlideShow().run()

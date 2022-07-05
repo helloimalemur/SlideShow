@@ -11,26 +11,23 @@ import asyncio
 import kivy
 
 
-def getimages(self):
+def getimages(self): #grab images and return as glob
     print("create image glob")
     self.imageglob = glob.glob("/home/foxx/Pictures/*.jpg")
     return self.imageglob
 
 
-# if empty set imagelist as first 100 images, if not empty, diff against main list - take next 100 images not used already and set imagelist
-# diff against usedimages
-def genlist(self):
+def genlist(self): #return list of images to use on this cycle
     print("generating and reducing list")
-    self.pused = self.using
-    self.tused = list(set(self.pused) | set(self.tused))
-    us = list(set(self.ig) - set(self.tused))
-    self.using = us[0:20] #set ims actually loaded
+    self.pused = self.using #set previously used
+    self.tused = list(set(self.pused) | set(self.tused)) # total used = prev + total
+    us = list(set(self.ig) - set(self.tused)) #using glob - previously used
+    self.using = us[0:20] #use only first x of previously unused
     return self.using
 
 
-def loadimages(self, im):
+def loadimages(self, im): #load images passed into carousel
     print("loading images into carousel")
-    #im = genlist(self)
     for i in im:
         print(i)
         image = AsyncImage(source=str(i))
@@ -39,37 +36,30 @@ def loadimages(self, im):
 
 class SlideShow(App):
     def build(self):
-        print("building app")
+        print("building app") # build app and set variables
         self.imageglob = getimages(self)
         self.ig = self.imageglob
         self.used = ()
         self.using = ()
         self.tused = ()
         self.pused = ()
-        Clock.schedule_interval(self.update, 4)
-        # create child widget
-        self.carousel = Carousel(direction='right')
-        # load images
-        # self.images = getimages(self)
-        ## create root layout and add widgets
-        root = BoxLayout()
-        root.add_widget(self.carousel)
+        Clock.schedule_interval(self.update, 4) # create clock scheduler
+        self.carousel = Carousel(direction='right') # create carousel child widget
+        root = BoxLayout() ## create root widget
+        root.add_widget(self.carousel) # add child widget to root widget
         return root
 
-    def update(self, *args):
+    def update(self, *args): # update function to run on Clock Schedule
         print("updating..")
         print(time.time())
-        #x = genlist(self)
-        #loadimages(self, x)
-        if self.carousel.next_slide:
+        if self.carousel.next_slide: # if we can still swipe then swipe
             print("swiping")
             self.carousel.load_next()
-        else:
+        else: # otherwise clear list of previously used, clear carousel, and reload images to start over
             self.tused = ()
             x = genlist(self)
             self.carousel.clear_widgets()
             loadimages(self, x)
-            #getimages(self)
 
 
 if __name__ == '__main__':

@@ -11,6 +11,7 @@ import asyncio
 import kivy
 import http.server
 import socketserver
+import threading
 
 def initnet():
     PORT = 8080
@@ -80,5 +81,6 @@ class SlideShow(App):
 
 
 if __name__ == '__main__':
-    #initnet()
+    net = threading.Thread(target=initnet)
+    net.start()
     SlideShow().run()

@@ -22,30 +22,22 @@ def getimages(self):
 
 class SlideShow(App):
     def build(self):
-        Clock.schedule_interval(self.update, 3)
-        #create child widget
-        self.carousel = Carousel(direction='right')
-        #load images
-        self.images = getimages(self)
-
-
-        ## create root layout and add widgets
-        root = BoxLayout()
-        root.add_widget(self.carousel)
-
-        return root
+        Clock.schedule_interval(self.update, 3) # clock runs update function every 3 seconds after loading main widget
+        self.carousel = Carousel(direction='right') #create child Carousel widget
+        self.images = getimages(self) #load images and add to Carousel widget
+        root = BoxLayout()# create root widget
+        root.add_widget(self.carousel) # add child widgets
+        return root #return root widget
 
     def update(self, *args):
-        print(time.time())
-        if self.carousel.next_slide:
-            self.carousel.load_next()
-        else:
-            self.carousel.clear_widgets()
-            getimages(self)
-
-
+        #print(time.time()) #debug output
+        if self.carousel.next_slide: #if there is a next slide
+            self.carousel.load_next() #load the next slide in carousel
+        #elif self.carousel.next_slide == False:
+        #    self.
+        else: #otherwise
+            self.carousel.clear_widgets() #clear the widgets from carousel
+            getimages(self)# and reload images from folder and reinitialize the child widget
 
 if __name__ == '__main__':
     SlideShow().run()
-
-

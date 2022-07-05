@@ -12,7 +12,7 @@ import kivy
 
 
 def getimages(self):
-    self.images = glob.glob("/home/foxx/Pictures/*.jpg")
+    self.images = glob.glob("/home/foxx/Pictures/o/*.jpg")
     for i in self.images:
         print(i)
         image = AsyncImage(source=i)
@@ -33,6 +33,7 @@ class SlideShow(App):
         #print(time.time()) #debug output
         if self.carousel.next_slide: #if there is a next slide
             self.carousel.load_next() #load the next slide in carousel
+            self.carousel.remove_widget(self.carousel.previous_slide)
         #elif self.carousel.next_slide == False:
         #    self.
         else: #otherwise

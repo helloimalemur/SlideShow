@@ -11,33 +11,56 @@ import asyncio
 import kivy
 
 
-def getimages(self):
-    self.images = glob.glob("/home/foxx/Pictures/*.jpg")
-    for i in self.images:
+def getimages(self): #grab images and return as glob
+    print("create image glob")
+    self.imageglob = glob.glob("/home/foxx/Pictures/*.jpg")
+    return self.imageglob
+
+
+def genlist(self): #return list of images to use on this cycle
+    print("generating and reducing list")
+    self.pused = self.using #set previously used
+    self.tused = list(set(self.pused) | set(self.tused)) # total used = prev + total
+    us = list(set(self.ig) - set(self.tused)) #using glob - previously used
+    self.using = us[0:20] #use only first x of previously unused
+    return self.using
+
+
+def loadimages(self, im): #load images passed into carousel
+    print("loading images into carousel")
+    for i in im:
         print(i)
-        image = AsyncImage(source=i)
+        image = AsyncImage(source=str(i))
         self.carousel.add_widget(image)
-    return self.images
 
 
 class SlideShow(App):
     def build(self):
-        Clock.schedule_interval(self.update, 3) # clock runs update function every 3 seconds after loading main widget
-        self.carousel = Carousel(direction='right') #create child Carousel widget
-        self.images = getimages(self) #load images and add to Carousel widget
-        root = BoxLayout()# create root widget
-        root.add_widget(self.carousel) # add child widgets
-        return root #return root widget
+        print("building app") # build app and set variables
+        self.imageglob = getimages(self)
+        self.ig = self.imageglob
+        self.used = ()
+        self.using = ()
+        self.tused = ()
+        self.pused = ()
+        Clock.schedule_interval(self.update, 4) # create clock scheduler
+        self.carousel = Carousel(direction='right') # create carousel child widget
+        root = BoxLayout() ## create root widget
+        root.add_widget(self.carousel) # add child widget to root widget
+        return root
 
-    def update(self, *args):
-        #print(time.time()) #debug output
-        if self.carousel.next_slide: #if there is a next slide
-            self.carousel.load_next() #load the next slide in carousel
-        #elif self.carousel.next_slide == False:
-        #    self.
-        else: #otherwise
-            self.carousel.clear_widgets() #clear the widgets from carousel
-            getimages(self)# and reload images from folder and reinitialize the child widget
+    def update(self, *args): # update function to run on Clock Schedule
+        print("updating..")
+        print(time.time())
+        if self.carousel.next_slide: # if we can still swipe then swipe
+            print("swiping")
+            self.carousel.load_next()
+        else: # otherwise clear list of previously used, clear carousel, and reload images to start over
+            self.tused = ()
+            x = genlist(self)
+            self.carousel.clear_widgets()
+            loadimages(self, x)
+
 
 if __name__ == '__main__':
     SlideShow().run()

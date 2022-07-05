@@ -13,7 +13,13 @@ import kivy
 
 def getimages(self): #grab images and return as glob
     print("create image glob")
-    self.imageglob = glob.glob("/home/foxx/Pictures/*.jpg")
+    path = "/run/media/foxx/HDD/PHOTO/2-15/"
+    #path = "/home/foxx/Pictures/"
+    filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
+    s = set()
+    for i in filetype:
+        s = s | set(glob.glob(path + i))
+    self.imageglob = list(s)
     return self.imageglob
 
 

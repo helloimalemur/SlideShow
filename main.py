@@ -9,8 +9,6 @@ import multiprocessing
 import os
 
 
-
-
 def net():
     import uploadserver
     uploadserver.app.run()

@@ -8,7 +8,7 @@ def upload_page():
     return render_template('index.html')
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/images', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']

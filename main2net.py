@@ -22,11 +22,12 @@ def net():
     uploadserver.app.run()
 
 
-#kivy
 def getimages(self): #grab images and return as glob
     print("create image glob")
-    path = "/home/foxx/Pictures"
-    #path = "./images"
+    #path = "/run/media/foxx/HDD/PHOTO/2-15/"
+    #path = "/home/foxx/Pictures/"
+
+    path = str(os.getcwd() + "/images/")
     filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
     s = set()
     for i in filetype:
@@ -34,7 +35,7 @@ def getimages(self): #grab images and return as glob
     self.imageglob = list(s)
     return self.imageglob
 
-#kivy
+
 def genlist(self): #return list of images to use on this cycle
     print("generating and reducing list")
     self.pused = self.using #set previously used
@@ -43,7 +44,7 @@ def genlist(self): #return list of images to use on this cycle
     self.using = us[0:20] #use only first x of previously unused
     return self.using
 
-#kivy
+
 def loadimages(self, im): #load images passed into carousel
     print("loading images into carousel")
     for i in im:
@@ -51,7 +52,7 @@ def loadimages(self, im): #load images passed into carousel
         image = AsyncImage(source=str(i))
         self.carousel.add_widget(image)
 
-#kivy class
+
 class SlideShow(App):
     def build(self):
         print("building app") # build app and set variables
@@ -67,7 +68,6 @@ class SlideShow(App):
         root.add_widget(self.carousel) # add child widget to root widget
         return root
 
-    # kivy
     def update(self, *args): # update function to run on Clock Schedule
         print("updating..")
         print(time.time())

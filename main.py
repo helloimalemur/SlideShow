@@ -9,12 +9,25 @@ import random
 import time
 import asyncio
 import kivy
+import http.server
+import socketserver
+import multiprocessing
+import os
+
+
+
+
+def net():
+    import uploadserver
+    uploadserver.app.run()
 
 
 def getimages(self): #grab images and return as glob
     print("create image glob")
-    path = "/run/media/foxx/HDD/PHOTO/2-15/"
+    #path = "/run/media/foxx/HDD/PHOTO/2-15/"
     #path = "/home/foxx/Pictures/"
+
+    path = str(os.getcwd() + "/images/")
     filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
     s = set()
     for i in filetype:
@@ -69,4 +82,7 @@ class SlideShow(App):
 
 
 if __name__ == '__main__':
+    nett = multiprocessing.Process(target=net)
+    nett.start()
     SlideShow().run()
+    nett.terminate()

@@ -75,6 +75,8 @@ class SlideShow(App):
             print("swiping")
             self.carousel.load_next()
         else: # otherwise clear list of previously used, clear carousel, and reload images to start over
+            self.ig = self.imageglob
+            getimages(self)
             self.tused = ()
             x = genlist(self)
             self.carousel.clear_widgets()

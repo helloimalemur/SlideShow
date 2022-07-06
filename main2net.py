@@ -11,21 +11,20 @@ import asyncio
 import kivy
 import http.server
 import socketserver
-import threading
+import multiprocessing
+import SimpleHTTPServerWithUpload
+import uploadserver
+
 
 def initnet():
-    PORT = 8080
-    Handler = http.server.SimpleHTTPRequestHandler
-    Handler.path = "index.html"
-    with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        print("serving at port", PORT)
-        httpd.serve_forever()
+    s = uploadserver.HTTPRequestHandler()
+
 
 #kivy
 def getimages(self): #grab images and return as glob
     print("create image glob")
-    path = "/run/media/foxx/HDD/PHOTO/2-15/"
-    #path = "/home/foxx/Pictures/"
+    #path = "/run/media/foxx/HDD/PHOTO/2-15/"
+    path = "/home/foxx/Pictures/"
     filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
     s = set()
     for i in filetype:
@@ -81,6 +80,7 @@ class SlideShow(App):
 
 
 if __name__ == '__main__':
-    net = threading.Thread(target=initnet)
+    net = multiprocessing.Process(target=initnet)
     net.start()
     SlideShow().run()
+    net.terminate()

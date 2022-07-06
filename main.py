@@ -8,7 +8,7 @@ import time
 import multiprocessing
 import os
 
-
+## need to white creation of "images/" folder
 def net():
     import uploadserver
     uploadserver.app.run()

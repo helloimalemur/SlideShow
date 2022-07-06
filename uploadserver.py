@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-from werkzeug.utils import secure_filename
-import os
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,7 +12,6 @@ def upload_file():
     if request.method == 'POST':
         f = request.files['file']
         f.save('images/' + f.filename)
-        #f.save( secure_filename(f.filename))
         return 'file uploaded successfully'
 
 

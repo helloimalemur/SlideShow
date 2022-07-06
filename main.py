@@ -20,6 +20,7 @@ def getimages(self): #grab images and return as glob
     #path = "/home/foxx/Pictures/"
 
     path = str(os.getcwd() + "/images/")
+    print(path)
     filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
     s = set()
     for i in filetype:

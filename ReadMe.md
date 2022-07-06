@@ -1,1 +1,1 @@
-pip install pims
+pip install pims kivy flask

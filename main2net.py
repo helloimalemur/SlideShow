@@ -12,19 +12,21 @@ import kivy
 import http.server
 import socketserver
 import multiprocessing
-import SimpleHTTPServerWithUpload
-import uploadserver
+import os
 
 
-def initnet():
-    s = uploadserver.HTTPRequestHandler()
+
+
+def net():
+    import uploadserver
+    uploadserver.app.run()
 
 
 #kivy
 def getimages(self): #grab images and return as glob
     print("create image glob")
-    #path = "/run/media/foxx/HDD/PHOTO/2-15/"
-    path = "/home/foxx/Pictures/"
+    path = "/home/foxx/Pictures"
+    #path = "./images"
     filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
     s = set()
     for i in filetype:
@@ -80,7 +82,7 @@ class SlideShow(App):
 
 
 if __name__ == '__main__':
-    net = multiprocessing.Process(target=initnet)
-    net.start()
+    nett = multiprocessing.Process(target=net)
+    nett.start()
     SlideShow().run()
-    net.terminate()
+    nett.terminate()

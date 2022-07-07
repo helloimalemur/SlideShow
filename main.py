@@ -41,11 +41,11 @@ def loadimages(self, im): #load images passed into carousel
     print("loading images into carousel")
     for i in im:
         print(i)
-        image = AsyncImage(source=str(i))
+        image = AsyncImage(source=str(i), allow_stretch=True)
         self.carousel.add_widget(image)
 
 
-class SlideShow(App):
+class SlideShowApp(App):
     def build(self):
         print("building app") # build app and set variables
         self.imageglob = getimages(self)
@@ -78,5 +78,5 @@ class SlideShow(App):
 if __name__ == '__main__':
     nett = multiprocessing.Process(target=net)
     nett.start()
-    SlideShow().run()
+    SlideShowApp().run()
     nett.terminate()

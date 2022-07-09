@@ -7,49 +7,19 @@ import glob
 import time
 import multiprocessing
 import os
+import uploadserver
 
 ## need to white creation of "images/" folder
+
+
 def net():
-    import uploadserver
     uploadserver.app.run()
-
-
-def getimages(self): #grab images and return as glob
-    print("create image glob")
-    #path = "/run/media/foxx/HDD/PHOTO/2-15/"
-    #path = "/home/foxx/Pictures/"
-
-    path = str(os.getcwd() + "/images/")
-    print(path)
-    filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
-    s = set()
-    for i in filetype:
-        s = s | set(glob.glob(path + i))
-    self.imageglob = list(s)
-    return self.imageglob
-
-
-def genlist(self): #return list of images to use on this cycle
-    print("generating and reducing list")
-    self.pused = self.using #set previously used
-    self.tused = list(set(self.pused) | set(self.tused)) # total used = prev + total
-    us = list(set(self.ig) - set(self.tused)) #using glob - previously used
-    self.using = us[0:20] #use only first x of previously unused
-    return self.using
-
-
-def loadimages(self, im): #load images passed into carousel
-    print("loading images into carousel")
-    for i in im:
-        print(i)
-        image = AsyncImage(source=str(i), allow_stretch=True)
-        self.carousel.add_widget(image)
 
 
 class SlideShowApp(App):
     def build(self):
         print("building app") # build app and set variables
-        self.imageglob = getimages(self)
+        self.imageglob = self.getimages()
         self.ig = self.imageglob
         self.used = ()
         self.using = ()
@@ -69,15 +39,47 @@ class SlideShowApp(App):
             self.carousel.load_next()
         else: # otherwise clear list of previously used, clear carousel, and reload images to start over
             self.ig = self.imageglob
-            getimages(self)
+            self.getimages()
             self.tused = ()
-            x = genlist(self)
+            x = self.genlist()
             self.carousel.clear_widgets()
-            loadimages(self, x)
+            self.loadimages(x)
+
+
+    def getimages(self): #grab images and return as glob
+        print("create image glob")
+        #path = "/run/media/foxx/HDD/PHOTO/2-15/"
+        #path = "/home/foxx/Pictures/"
+
+        path = str(os.getcwd() + "/images/")
+        print(path)
+        filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
+        s = set()
+        for i in filetype:
+            s = s | set(glob.glob(path + i))
+        self.imageglob = list(s)
+        return self.imageglob
+
+
+    def genlist(self): #return list of images to use on this cycle
+        print("generating and reducing list")
+        self.pused = self.using #set previously used
+        self.tused = list(set(self.pused) | set(self.tused)) # total used = prev + total
+        us = list(set(self.ig) - set(self.tused)) #using glob - previously used
+        self.using = us[0:20] #use only first x of previously unused
+        return self.using
+
+
+    def loadimages(self, im): #load images passed into carousel
+        print("loading images into carousel")
+        for i in im:
+            print(i)
+            image = AsyncImage(source=str(i), allow_stretch=True)
+            self.carousel.add_widget(image)
 
 
 if __name__ == '__main__':
-    nett = multiprocessing.Process(target=net)
-    nett.start()
+    session = multiprocessing.Process(target=net)
+    session.start()
     SlideShowApp().run()
-    nett.terminate()
+    session.terminate()

@@ -49,10 +49,8 @@ class SlideShowApp(App):
     def getimages(self): #grab images and return as glob
         print("create image glob")
         #path = "/run/media/foxx/HDD/PHOTO/2-15/"
-        #path = "/home/foxx/Pictures/"
+        path = "images/"
 
-        path = str(os.getcwd() + "/images/")
-        print(path)
         filetype = ("*.jpg", "*.JPG", "*.png", "*.PNG")
         s = set()
         for i in filetype:
@@ -60,17 +58,17 @@ class SlideShowApp(App):
         self.imageglob = list(s)
         return self.imageglob
 
-
-    def genlist(self): #return list of images to use on this cycle
+    def genlist(self):  # return list of images to use on this cycle
         print("generating and reducing list")
-        self.pused = self.using #set previously used
-        self.tused = list(set(self.pused) | set(self.tused)) # total used = prev + total
-        us = list(set(self.ig) - set(self.tused)) #using glob - previously used
-        self.using = us[0:20] #use only first x of previously unused
+        self.pused = self.using  # set previously used
+        self.tused = list(set(self.pused) | set(self.tused))  # total used = prev + total
+        us = list(set(self.ig) - set(self.tused))  # using glob - previously used
+        self.using = us[0:20]  # use only first x of previously unused
         return self.using
 
-
-    def loadimages(self, im): #load images passed into carousel
+    def loadimages(self, im):  # load images
+        path = str(os.getcwd() + "/images/")
+        print(path) #passed into carousel
         print("loading images into carousel")
         for i in im:
             print(i)
